@@ -1,6 +1,6 @@
 import type React from "react"
 import { TouchableOpacity, Text, StyleSheet } from "react-native"
-import { Ionicons } from "@expo/vector-icons"
+import Icon from "./Icon"
 
 type TopicChipProps = {
   topic: string
@@ -22,11 +22,12 @@ const TopicChip: React.FC<TopicChipProps> = ({
       style={[styles.chip, selected && styles.selectedChip, highInterest && styles.highInterestChip]}
       onPress={onPress}
       onLongPress={onLongPress}
+      accessibilityRole="button"
     >
       <Text style={[styles.chipText, selected && styles.selectedChipText, highInterest && styles.highInterestChipText]}>
         {topic}
       </Text>
-      {highInterest && <Ionicons name="notifications" size={14} color="#fff" style={styles.icon} />}
+      {highInterest && <Icon name="notifications" size={14} color="#fff" style={styles.icon} />}
     </TouchableOpacity>
   )
 }
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     flexDirection: "row",
     alignItems: "center",
+    cursor: "pointer",
   },
   selectedChip: {
     backgroundColor: "#e8f0fe",

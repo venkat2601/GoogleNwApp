@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView, TouchableWithoutFeedback } from "react-native"
-import { Ionicons } from "@expo/vector-icons"
+import Icon from "./Icon"
 
 // Available news sources
 const newsSources = [
@@ -96,8 +96,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ visible, onClose, currentFilt
             <View style={styles.modalContainer}>
               <View style={styles.header}>
                 <Text style={styles.title}>Filter News</Text>
-                <TouchableOpacity onPress={onClose}>
-                  <Ionicons name="close" size={24} color="#5f6368" />
+                <TouchableOpacity onPress={onClose} accessibilityRole="button">
+                  <Icon name="close" size={24} color="#5f6368" />
                 </TouchableOpacity>
               </View>
 
@@ -110,6 +110,8 @@ const FilterModal: React.FC<FilterModalProps> = ({ visible, onClose, currentFilt
                         key={source}
                         style={[styles.sourceChip, sources.includes(source) && styles.selectedChip]}
                         onPress={() => toggleSource(source)}
+                        accessibilityRole="checkbox"
+                        accessibilityState={{ checked: sources.includes(source) }}
                       >
                         <Text style={[styles.sourceChipText, sources.includes(source) && styles.selectedChipText]}>
                           {source}
@@ -127,11 +129,13 @@ const FilterModal: React.FC<FilterModalProps> = ({ visible, onClose, currentFilt
                         key={option.value}
                         style={[styles.optionItem, recency === option.value && styles.selectedOption]}
                         onPress={() => setRecency(option.value)}
+                        accessibilityRole="radio"
+                        accessibilityState={{ checked: recency === option.value }}
                       >
                         <Text style={[styles.optionText, recency === option.value && styles.selectedOptionText]}>
                           {option.label}
                         </Text>
-                        {recency === option.value && <Ionicons name="checkmark" size={18} color="#1a73e8" />}
+                        {recency === option.value && <Icon name="checkmark" size={18} color="#1a73e8" />}
                       </TouchableOpacity>
                     ))}
                   </View>
@@ -145,11 +149,13 @@ const FilterModal: React.FC<FilterModalProps> = ({ visible, onClose, currentFilt
                         key={lang.code}
                         style={[styles.optionItem, language === lang.code && styles.selectedOption]}
                         onPress={() => setLanguage(lang.code)}
+                        accessibilityRole="radio"
+                        accessibilityState={{ checked: language === lang.code }}
                       >
                         <Text style={[styles.optionText, language === lang.code && styles.selectedOptionText]}>
                           {lang.name}
                         </Text>
-                        {language === lang.code && <Ionicons name="checkmark" size={18} color="#1a73e8" />}
+                        {language === lang.code && <Icon name="checkmark" size={18} color="#1a73e8" />}
                       </TouchableOpacity>
                     ))}
                   </View>
@@ -157,10 +163,10 @@ const FilterModal: React.FC<FilterModalProps> = ({ visible, onClose, currentFilt
               </ScrollView>
 
               <View style={styles.footer}>
-                <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
+                <TouchableOpacity style={styles.resetButton} onPress={handleReset} accessibilityRole="button">
                   <Text style={styles.resetButtonText}>Reset</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.applyButton} onPress={handleApply}>
+                <TouchableOpacity style={styles.applyButton} onPress={handleApply} accessibilityRole="button">
                   <Text style={styles.applyButtonText}>Apply Filters</Text>
                 </TouchableOpacity>
               </View>
@@ -219,6 +225,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     margin: 4,
+    cursor: "pointer",
   },
   selectedChip: {
     backgroundColor: "#e8f0fe",
@@ -245,6 +252,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderBottomWidth: 1,
     borderBottomColor: "#e0e0e0",
+    cursor: "pointer",
   },
   selectedOption: {
     backgroundColor: "#e8f0fe",
@@ -267,6 +275,7 @@ const styles = StyleSheet.create({
   resetButton: {
     paddingVertical: 8,
     paddingHorizontal: 16,
+    cursor: "pointer",
   },
   resetButtonText: {
     color: "#5f6368",
@@ -277,6 +286,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 4,
+    cursor: "pointer",
   },
   applyButtonText: {
     color: "#fff",

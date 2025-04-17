@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { createContext, useState, useContext } from "react"
+import { createContext, useState, useContext, type ReactNode } from "react"
 
 type UserContextType = {
   user: {
@@ -27,7 +27,7 @@ const defaultUser = {
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
-export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState(defaultUser)
 
   const updateUser = (data: Partial<typeof user>) => {

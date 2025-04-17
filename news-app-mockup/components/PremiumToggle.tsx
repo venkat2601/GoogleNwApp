@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { View, Text, Switch, StyleSheet } from "react-native"
-import { Ionicons } from "@expo/vector-icons"
+import Icon from "./Icon"
 import { useUser } from "../context/UserContext"
 
 const PremiumToggle: React.FC = () => {
@@ -12,7 +12,7 @@ const PremiumToggle: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.textContainer}>
         <View style={styles.titleContainer}>
-          <Ionicons name="star" size={20} color={user.isPremium ? "#1a73e8" : "#5f6368"} />
+          <Icon name="star" size={20} color={user.isPremium ? "#1a73e8" : "#5f6368"} />
           <Text style={styles.title}>Premium View</Text>
         </View>
         <Text style={styles.description}>

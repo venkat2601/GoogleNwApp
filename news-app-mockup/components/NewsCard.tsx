@@ -2,9 +2,9 @@
 
 import type React from "react"
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native"
-import { useNavigation } from "@react-navigation/native"
-import { Ionicons } from "@expo/vector-icons"
+import { useRouter } from "next/router"
 import { useUser } from "../context/UserContext"
+import Icon from "./Icon" // We'll create this component for web-compatible icons
 
 type NewsCardProps = {
   id: string
@@ -29,14 +29,14 @@ const NewsCard: React.FC<NewsCardProps> = ({
   topic,
   url,
 }) => {
-  const navigation = useNavigation()
+  const router = useRouter()
   const { user } = useUser()
   const displayText = user.isPremium ? fullSummary : summary
 
   const handlePress = () => {
-    navigation.navigate(
-      "NewsDetail" as never,
-      {
+    router.push({
+      pathname: "/news/[id]",
+      query: {
         id,
         title,
         summary: user.isPremium ? fullSummary : summary,
@@ -45,13 +45,13 @@ const NewsCard: React.FC<NewsCardProps> = ({
         publishedAt,
         topic,
         url,
-        isPremium: user.isPremium,
-      } as never,
-    )
+        isPremium: user.isPremium ? "true" : "false",
+      },
+    })
   }
 
   return (
-    <TouchableOpacity style={styles.card} onPress={handlePress}>
+    <TouchableOpacity style={styles.card} onPress={handlePress} accessibilityRole="button">
       <View style={styles.cardContent}>
         <View style={styles.textContainer}>
           <Text style={styles.topic}>{topic}</Text>
@@ -70,7 +70,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
       </View>
       {user.isPremium && (
         <View style={styles.premiumBadge}>
-          <Ionicons name="star" size={12} color="#fff" />
+          <Icon name="star" size={12} color="#fff" />
           <Text style={styles.premiumText}>AI Summary</Text>
         </View>
       )}
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     overflow: "hidden",
+    cursor: "pointer",
   },
   cardContent: {
     flexDirection: "row",
