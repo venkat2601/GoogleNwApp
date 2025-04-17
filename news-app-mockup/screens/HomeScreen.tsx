@@ -5,50 +5,28 @@ import { useState, useEffect } from "react"
 import { View, Text, FlatList, StyleSheet, RefreshControl, TouchableOpacity, ActivityIndicator } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Ionicons } from "@expo/vector-icons"
-import { useRoute } from "@react-navigation/native"
 import NewsCard from "../components/NewsCard"
 import TopicChip from "../components/TopicChip"
 import PremiumToggle from "../components/PremiumToggle"
-import FilterModal from "../components/FilterModal"
 import { useUser } from "../context/UserContext"
 import { mockNewsData } from "../data/mockData"
 
 const HomeScreen: React.FC = () => {
   const { user } = useUser()
-  const route = useRoute()
-  const initialFilter = route.params?.initialFilter
-
   const [news, setNews] = useState(mockNewsData)
   const [filteredNews, setFilteredNews] = useState(mockNewsData)
   const [refreshing, setRefreshing] = useState(false)
-  const [activeFilter, setActiveFilter] = useState(initialFilter || "For You")
-  const [showFilters, setShowFilters] = useState(false)
-  const [filters, setFilters] = useState({
-    sources: [],
-    recency: "all",
-    language: "en",
-  })
+  const [activeFilter, setActiveFilter] = useState("For You")
 
   useEffect(() => {
-    // Apply topic filter first
-    let result = news
-
     if (activeFilter === "For You") {
-      result = news.filter((item) => user.topicsOfInterest.includes(item.topic))
+      setFilteredNews(news.filter((item) => user.topicsOfInterest.includes(item.topic)))
     } else if (activeFilter !== "All") {
-      result = news.filter((item) => item.topic === activeFilter)
+      setFilteredNews(news.filter((item) => item.topic === activeFilter))
+    } else {
+      setFilteredNews(news)
     }
-
-    // Then apply additional filters
-    if (filters.sources.length > 0) {
-      result = result.filter((item) => filters.sources.includes(item.source))
-    }
-
-    // For demo purposes, we're not actually filtering by recency and language
-    // In a real app, these would be applied here
-
-    setFilteredNews(result)
-  }, [activeFilter, news, user.topicsOfInterest, filters])
+  }, [activeFilter, news, user.topicsOfInterest])
 
   const onRefresh = () => {
     setRefreshing(true)
@@ -58,11 +36,6 @@ const HomeScreen: React.FC = () => {
     }, 1500)
   }
 
-  const handleFilterApply = (newFilters: typeof filters) => {
-    setFilters(newFilters)
-    setShowFilters(false)
-  }
-
   const filterOptions = ["For You", "All", ...user.topicsOfInterest]
 
   return (
@@ -70,9 +43,6 @@ const HomeScreen: React.FC = () => {
       <View style={styles.header}>
         <Text style={styles.logo}>NewsDigest</Text>
         <View style={styles.headerRight}>
-          <TouchableOpacity style={styles.iconButton} onPress={() => setShowFilters(true)}>
-            <Ionicons name="filter" size={24} color="#5f6368" />
-          </TouchableOpacity>
           <TouchableOpacity style={styles.iconButton}>
             <Ionicons name="search" size={24} color="#5f6368" />
           </TouchableOpacity>
@@ -108,16 +78,9 @@ const HomeScreen: React.FC = () => {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <ActivityIndicator size="large" color="#1a73e8" />
-            <Text style={styles.emptyText}>No news found matching your filters</Text>
+            <Text style={styles.emptyText}>Loading news...</Text>
           </View>
         }
-      />
-
-      <FilterModal
-        visible={showFilters}
-        onClose={() => setShowFilters(false)}
-        currentFilters={filters}
-        onApply={handleFilterApply}
       />
     </SafeAreaView>
   )

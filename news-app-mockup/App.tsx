@@ -11,8 +11,6 @@ import ProfileScreen from "./screens/ProfileScreen"
 import TopicSelectionScreen from "./screens/TopicSelectionScreen"
 import NewsDetailScreen from "./screens/NewsDetailScreen"
 import NotificationsScreen from "./screens/NotificationsScreen"
-import DashboardScreen from "./screens/DashboardScreen"
-import ShareNewsScreen from "./screens/ShareNewsScreen"
 
 // Context
 import { UserProvider } from "./context/UserContext"
@@ -29,8 +27,6 @@ function HomeTabs() {
 
           if (route.name === "Feed") {
             iconName = focused ? "newspaper" : "newspaper-outline"
-          } else if (route.name === "Dashboard") {
-            iconName = focused ? "grid" : "grid-outline"
           } else if (route.name === "Profile") {
             iconName = focused ? "person" : "person-outline"
           } else if (route.name === "Topics") {
@@ -45,7 +41,6 @@ function HomeTabs() {
         tabBarInactiveTintColor: "gray",
       })}
     >
-      <Tab.Screen name="Dashboard" component={DashboardScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Feed" component={HomeScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Topics" component={TopicSelectionScreen} />
       <Tab.Screen name="Notifications" component={NotificationsScreen} />
@@ -63,7 +58,6 @@ export default function App() {
           <Stack.Navigator>
             <Stack.Screen name="Main" component={HomeTabs} options={{ headerShown: false }} />
             <Stack.Screen name="NewsDetail" component={NewsDetailScreen} options={{ title: "News Detail" }} />
-            <Stack.Screen name="ShareNews" component={ShareNewsScreen} options={{ title: "Share News" }} />
           </Stack.Navigator>
         </NavigationContainer>
       </UserProvider>
