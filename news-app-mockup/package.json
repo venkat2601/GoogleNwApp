@@ -59,14 +59,14 @@
     "vaul": "^0.9.6",
     "zod": "^3.24.1",
     "react-native": "latest",
+    "expo-font": "latest",
     "@react-navigation/native": "latest",
     "react-native-safe-area-context": "latest",
     "react-native-screens": "latest",
-    "expo-font": "latest",
+    "@expo/vector-icons": "latest",
     "@react-navigation/native-stack": "latest",
     "@react-navigation/bottom-tabs": "latest",
-    "expo-status-bar": "latest",
-    "@expo/vector-icons": "latest"
+    "expo-status-bar": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",
